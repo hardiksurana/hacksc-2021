@@ -1,3 +1,7 @@
+# local files and folders
+hacksc_venv/
+papers/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
