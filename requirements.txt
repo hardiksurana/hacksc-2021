@@ -17,6 +17,7 @@ packaging==20.9
 prettyprint==0.1.5
 pycodestyle==2.6.0
 pyparsing==2.4.7
+python-dotenv==0.15.0
 pytz==2021.1
 regex==2020.11.13
 requests==2.25.1
