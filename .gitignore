@@ -1,6 +1,7 @@
 # local files and folders
 hacksc_venv/
 papers/
+.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
