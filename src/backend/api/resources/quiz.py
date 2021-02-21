@@ -24,6 +24,7 @@ class GenerateQuizAPI(Resource):
             text = get_text_corpus_from_audio(url)
 
         qa_pairs = get_qa_pairs_from_text_corpus(text)
+        print(qa_pairs)
         response = jsonify(qa_pairs)
         response.headers.add('Access-Control-Allow-Origin', '*')
         response.status_code = 200
