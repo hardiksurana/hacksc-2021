@@ -27,11 +27,14 @@ from transformers import (
 
 class QueGenerator():
   def __init__(self):
-    self.que_model = T5ForConditionalGeneration.from_pretrained('./t5_que_gen/t5_que_gen_model/t5_base_que_gen/')
-    self.ans_model = T5ForConditionalGeneration.from_pretrained('./t5_que_gen/t5_ans_gen_model/t5_base_ans_gen/')
+    import os
+    path = os.path.abspath(os.getcwd()) + '/' + os.path.dirname(__file__)
+    # print(path)
+    self.que_model = T5ForConditionalGeneration.from_pretrained(path + '/t5_que_gen/t5_que_gen_model/t5_base_que_gen/')
+    self.ans_model = T5ForConditionalGeneration.from_pretrained(path + '/t5_que_gen/t5_ans_gen_model/t5_base_ans_gen/')
 
-    self.que_tokenizer = T5Tokenizer.from_pretrained('./t5_que_gen/t5_que_gen_model/t5_base_tok_que_gen/')
-    self.ans_tokenizer = T5Tokenizer.from_pretrained('./t5_que_gen/t5_ans_gen_model/t5_base_tok_ans_gen/')
+    self.que_tokenizer = T5Tokenizer.from_pretrained(path + '/t5_que_gen/t5_que_gen_model/t5_base_tok_que_gen/')
+    self.ans_tokenizer = T5Tokenizer.from_pretrained(path + '/t5_que_gen/t5_ans_gen_model/t5_base_tok_ans_gen/')
     
     self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
     
