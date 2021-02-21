@@ -7,8 +7,16 @@ COPY requirements.txt /pkg/
 RUN apt-get update && apt-get install -y python3-pip
 RUN pip3 install -r /pkg/requirements.txt
 
-EXPOSE 80
+ARG app=run:app
+ARG config=development
+ARG host='0.0.0.0'
+ARG port=80
+
+ENV FLASK_APP=$app
+ENV FLASK_ENV=$config
+ENV FLASK_RUN_HOST=$host
+ENV FLASK_RUN_PORT=$port
 
 WORKDIR /app
 
-ENTRYPOINT ["python", "/app/run.py"]
+ENTRYPOINT ["flask", "run"]
