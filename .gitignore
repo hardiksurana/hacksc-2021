@@ -2,6 +2,7 @@
 hacksc_venv/
 papers/
 .vscode/
+t5_que_gen/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

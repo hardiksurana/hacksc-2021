@@ -1,11 +1,8 @@
+from src.models.t5 import QuestionGenerator, preprocess_question_answer
+
+
+que_generator = QuestionGenerator()
+
 def get_qa_pairs_from_text_corpus(text):
-    qa_pairs = [
-        {
-            "question": "What is my name?",
-            "answer": "Albert Einstein"
-        },
-        {
-            "question": "When was I born?",
-            "answer": "14 March, 1879"
-        }]
-    return qa_pairs
+    q_a = que_generator.generate(text)
+    return preprocess_question_answer(q_a)

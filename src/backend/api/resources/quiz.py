@@ -8,17 +8,12 @@ import json
 
 class GenerateQuizAPI(Resource):
     def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument(
-            name='url', type=str, required=False, help='url to audio to extract text from')
-        self.reqparse.add_argument(
-            name='text', type=str, required=False, help='corpus to generate question answer pairs on')
         super(GenerateQuizAPI, self).__init__()
 
-    def get(self):
-        args = self.reqparse.parse_args()
-        url = args['url']
-        text = args['text']
+    def post(self):
+        params = request.json
+        url = params['url'] if 'url' in params else None
+        text = params['text'] if 'text' in params else None
 
         if not url and not text:
             abort(400, description="invalid params")
