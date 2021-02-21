@@ -11,6 +11,7 @@ from string import punctuation
 import nltk
 nltk.download('punkt')
 from nltk.tokenize import sent_tokenize
+import argparse
 
 import numpy as np
 import torch
@@ -87,13 +88,41 @@ class QueGenerator():
     dec = [self.que_tokenizer.decode(ids, skip_special_tokens=False) for ids in outs]
     return dec
 
+def remove_html_tags(text):
+    """Remove html tags from a string"""
+    import re
+    clean = re.compile('<.*?>')
+    return re.sub(clean, '', text)
+
+def preprocess_question_answer(q_a):
+  'Cleans q and a and returns a list of cleaned question,answer pair dicts'
+  cleaned_q_a = []
+  for pair in q_a:
+    answer = remove_html_tags(pair['answer']).strip()
+    question = remove_html_tags(pair['question']).strip()
+    if len(answer) == 0 or len(question) == 0:
+      continue
+    cleaned_q_a.append({'question': question, 'answer': answer})
+  return cleaned_q_a
+
 if __name__ == '__main__':
-    text = "Python is an interpreted, high-level, general-purpose programming language. Created by Guido van Rossum \
-    and first released in 1991, Python's design philosophy emphasizes code \
-    readability with its notable use of significant whitespace."
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--text", help='text to input to the model')
+    parser.add_argument("--file", help='path to text file')
+    args = parser.parse_args()
+    if not args.text and not args.file:
+      print('Please mention either text or file name')
+      exit()
+    elif args.text:
+      text = args.text
+    else:
+      with open(args.file, 'r') as f:
+        text = f.read()
 
     que_generator = QueGenerator()    
-    print(que_generator.generate(text))
+    q_a = que_generator.generate(text)
+    print(q_a)
+    print(preprocess_question_answer(q_a))
     
     # text2 = "Gravity (from Latin gravitas, meaning 'weight'), or gravitation, is a natural phenomenon by which all \
     # things with mass or energy—including planets, stars, galaxies, and even light—are brought toward (or gravitate toward) \
