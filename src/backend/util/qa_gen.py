@@ -6,6 +6,6 @@ def get_qa_pairs_from_text_corpus(text):
         },
         {
             "question": "When was I born?",
-            "answer": "Albert Einstein"
+            "answer": "14 March, 1879"
         }]
     return qa_pairs
