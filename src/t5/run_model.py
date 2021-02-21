@@ -9,7 +9,7 @@ from itertools import chain
 from string import punctuation
 
 import nltk
-nltk.download('punkt')
+nltk.download('punkt', quiet=True)
 from nltk.tokenize import sent_tokenize
 import argparse
 
@@ -56,10 +56,10 @@ class QueGenerator():
             sent = "[HL] %s [HL]" % sent
         input_ = "%s %s" % (input_, sent)
         input_ = input_.strip()
-      input_ = input_ + " </s>"
+      input_ = input_ + " "
       examples.append(input_)
     
-    batch = self.ans_tokenizer.batch_encode_plus(examples, max_length=512, pad_to_max_length=True, return_tensors="pt")
+    batch = self.ans_tokenizer.batch_encode_plus(examples, max_length=512, padding=True, return_tensors="pt", truncation=True)
     with torch.no_grad():
       outs = self.ans_model.generate(input_ids=batch['input_ids'].to(self.device), 
                                 attention_mask=batch['attention_mask'].to(self.device), 
@@ -76,10 +76,10 @@ class QueGenerator():
   def _get_questions(self, text, answers):
     examples = []
     for ans in answers:
-      input_text = "%s [SEP] %s </s>" % (ans, text)
+      input_text = "%s [SEP] %s " % (ans, text)
       examples.append(input_text)
     
-    batch = self.que_tokenizer.batch_encode_plus(examples, max_length=512, pad_to_max_length=True, return_tensors="pt")
+    batch = self.que_tokenizer.batch_encode_plus(examples, max_length=512, padding=True, return_tensors="pt", truncation=True)
     with torch.no_grad():
       outs = self.que_model.generate(input_ids=batch['input_ids'].to(self.device), 
                                 attention_mask=batch['attention_mask'].to(self.device), 
@@ -121,7 +121,7 @@ if __name__ == '__main__':
 
     que_generator = QueGenerator()    
     q_a = que_generator.generate(text)
-    print(q_a)
+    # print(q_a)
     print(preprocess_question_answer(q_a))
     
     # text2 = "Gravity (from Latin gravitas, meaning 'weight'), or gravitation, is a natural phenomenon by which all \
